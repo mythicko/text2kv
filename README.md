@@ -1,80 +1,80 @@
 # am-text2kv
 
-# 文本文件储存器 CF-Workers-TEXT2KV
+# Text file storage CF-Workers-TEXT2KV
 
-CF-Workers-TEXT2KV 是一个在 Cloudflare Workers 上运行的无服务器应用程序,可以将文本文件存储到 Cloudflare Workers KV 键值存储中,并且可以通过 URL 请求读取或更新这些文本文件。它提供了一个安全的方式来管理和访问您的文本文件,同时利用了 Cloudflare 的全球分布式网络。
+CF-Workers-TEXT2KV is a serverless application running on Cloudflare Workers that can store text files in Cloudflare Workers KV key-value storage and read or update these text files through URL requests. It provides a secure way to manage and access your text files while leveraging Cloudflare's globally distributed network.
 
-- 部署视频教程：[小白教程](https://www.youtube.com/watch?v=dzxezRV1v-o)
-- 视频教程：[所有教程](https://www.youtube.com/playlist?list=PLGVQi7TjHKXbrY0Pk8gm3T7m8MZ-InquF)
+- Deployment video tutorial: [Newbie Tutorial](https://www.youtube.com/watch?v=dzxezRV1v-o)
+- Video tutorials: [All tutorials](https://www.youtube.com/playlist?list=PLGVQi7TjHKXbrY0Pk8gm3T7m8MZ-InquF)
 
-- AM科技官网：[https://am.809098.xyz](官网)
-- YouTube：[https://youtube.com/@AM_CLUB](AM科技)
-- Telegram：[https://t.me/AM_CLUBS](AM_CLUBS)
-- Github：[https://github.com/ansoncloud8](ansoncloud8)
-- VLESS订阅信息：[节点订阅信息](https://worker.amcloud.filegear-sg.me/866853eb-5293-4f09-bf00-e13eb237c655)
+- AM Technology official website: [https://am.809098.xyz](official website)
+- YouTube: [https://youtube.com/@AM_CLUB](AM Technology)
+- Telegram: [https://t.me/AM_CLUBS](AM_CLUBS)
+- Github: [https://github.com/ansoncloud8](ansoncloud8)
+- VLESS subscription information: [Node subscription information](https://worker.amcloud.filegear-sg.me/866853eb-5293-4f09-bf00-e13eb237c655)
 
-## 功能特性
+## Features
 
-- **文本文件存储**: 您可以将任何文本文件存储到 Cloudflare Workers KV 键值存储中,包括纯文本、JSON、XML 等格式。
-- **通过 URL 读取文件**: 只需通过构造合适的 URL,就可以读取存储在 KV 中的文本文件内容。
-- **通过 URL 更新文件**: 您可以使用 URL 查询参数将新的文本内容上传到 KV,从而实现文件的更新。
-- **Base64 编码支持**: 支持使用 Base64 编码的方式上传和下载文件,以应对某些特殊字符场景。
-- **安全访问控制**: 通过设置 token 参数,可以限制只有拥有正确密钥的请求才能访问您的文件。
-- **辅助工具脚本**: 提供了 Windows 批处理文件和 Linux Shell 脚本,用于方便地从本地上传文件到 KV。
+- **Text File Storage**: You can store any text file in Cloudflare Workers KV key-value storage, including plain text, JSON, XML, and other formats.
+- **Read files via URL**: Simply by constructing a suitable URL, you can read the contents of text files stored in KV.
+- **Update files via URL**: You can use URL query parameters to upload new text content to KV to update files.
+- **Base64 encoding support**: Supports uploading and downloading files using Base64 encoding to cope with some special character scenarios.
+- **Secure access control**: By setting the token parameter, you can restrict access to your files to only those requests with the correct key.
+- **Auxiliary tool script**: Provides Windows batch files and Linux Shell scripts to easily upload files from local to KV.
 
-## 使用说明 
+## Instructions for use
 
-1. **部署到 Cloudflare Workers**
+1. Deploy to Cloudflare Workers
 
-  将项目代码部署到您的 Cloudflare Workers 服务。您需要先在 Cloudflare 上创建一个 Workers 项目,然后将 `_worker.js` 文件的内容复制粘贴到 Workers 编辑器中。
+  Deploy the project code to your Cloudflare Workers service. You need to first create a Workers project on Cloudflare, then copy and paste the contents of the `_worker.js` file into the Workers editor.
 
-2. **创建 KV 命名空间**
+2. **Create KV namespace**
 
-  在您的 Cloudflare Workers 和 Pages 项目中的KV选项,创建一个新的 `KV` 命名空间,用于存储文本文件。记下这个 KV 命名空间的名称,因为您需要将它绑定到 Workers 上。
+  In the KV tab of your Cloudflare Workers and Pages project, create a new `KV` namespace to store text files. Make a note of the name of this KV namespace, as you will need to bind it to Workers.
 
-3. **设置 TOKEN 变量**
+3. **Set the TOKEN variable**
 
-  - 为了增加安全性,您需要设置一个 TOKEN 变量,作为访问文件的密钥。在 Cloudflare Workers 的环境变量设置中,添加一个名为 `TOKEN` 的变量,并为其赋予一个安全的值。
-  - 默认 TOKEN 为：`passwd`
-  - 在变量找到 "KV 命名空间绑定"项, 点添加绑定,添加一个名为 `KV` 的变量,并选中一个KV 命名空间,这个就选择上面第2步中创建的KV 命名空间的名称
+  - For added security, you need to set a TOKEN variable as a key to access the file. In the Cloudflare Workers environment variable settings, add a variable called `TOKEN` and give it a secure value.
+  - The default TOKEN is: `passwd`
+  - Find the "KV Namespace Binding" item in the variables, click Add Binding, add a variable named `KV`, and select a KV namespace. This is the name of the KV namespace created in step 2 above.
 
-4. **访问配置页面**
+4. **Visit the configuration page**
 
-例如 您的workers项目域名为：`txt.anson.workers.dev` , token值为 `passwd`；
+For example, if your workers project domain name is: `txt.anson.workers.dev`, the token value is `passwd`;
 
-  - 访问 `https://您的Workers域名/config?token=您的TOKEN` 或 `https://您的Workers域名/您的TOKEN`，您将看到一个配置页面，其中包含了使用说明和下载脚本的链接。
+  - Visit `https://yourWorkersdomain/config?token=yourTOKEN` or `https://yourWorkersdomain/yourTOKEN`, you will see a configuration page with instructions and a link to download the script.
 
-  - 你的项目配置页则为：
+  - Your project configuration page is:
 
-    ```url
+    ```URL
     https://txt.anson.workers.dev/config?token=passwd
-    或
+    or
     https://txt.anson.workers.dev/passwd
     ```
 
-5. **使用辅助脚本上传文件**
+5. **Use auxiliary script to upload files**
 
-  - Windows 用户可以下载 `update.bat` 脚本,然后执行 `update.bat 文件名` 来上传本地文件到 KV。
-  - Linux 用户可以下载 `update.sh` 脚本,执行 `./update.sh 文件名` 来上传本地文件。
-  - **注意：因为URL长度限制，如果保存内容过长则只能通过直接编辑`KV`对应文件内容来实现大文件的修改保存。**
+  - Windows users can download the `update.bat` script, and then execute `update.bat filename` to upload local files to KV.
+  - Linux users can download the `update.sh` script and execute `./update.sh filename` to upload local files.
+  - **Note: Due to the URL length limit, if the saved content is too long, you can only modify and save the large file by directly editing the corresponding file content of `KV`. **
 
-6. **通过 URL 访问文件**
+6. **Access files via URL**
 
-例如 您的workers项目域名为：`txt.anson.workers.dev` , token值为 `test` , 需要访问的文件名为 `ip.txt`；
+For example, your workers project domain name is: `txt.anson.workers.dev`, the token value is `test`, and the file name to be accessed is `ip.txt`;
 
-  - 构造 URL 的格式为 `https://您的Workers域名/文件名?token=您的TOKEN`。您就可以在浏览器中查看该文件的内容了。
-  - 你的访问地址则为： `https://txt.anson.workers.dev/ip.txt?token=test`。
+  - Construct the URL in the format of `https://yourWorkersdomain/filename?token=yourTOKEN`. You can view the contents of the file in the browser.
+  - Your access address is: `https://txt.anson.workers.dev/ip.txt?token=test`.
 
-7. **简单的更新文件内容**
+7. **Simple update file content**
 
-  要更新某个文件的内容,可以使用 URL 查询参数 `text` 或 `b64` 来指定新的文本内容或 Base64 编码后的内容。URL 的格式为:
+  To update the contents of a file, you can use the URL query parameters `text` or `b64` to specify the new text content or Base64-encoded content. The format of the URL is:
 
-  ```url
-https://您的Workers域名/文件名?token=您的TOKEN&text=新文本内容
-或
-https://您的Workers域名/文件名?token=您的TOKEN&b64=Base64编码的新文本内容
+  ```URL
+https://your Workers domain name/file name?token=your TOKEN&text=new text content
+or
+https://your Workers domain name/file name?token=your TOKEN&b64=Base64-encoded new text content
   ```
 
-Workers 会自动将新内容存储到对应的文件中。
+Workers will automatically store new content in the corresponding files.
 
-通过这个无服务器应用,您可以方便地在 Cloudflare 的分布式网络上存储和管理文本文件,同时享受高性能和安全可靠的优势。欢迎使用 CF-Workers-TEXT2KV!
+With this serverless application, you can easily store and manage text files on Cloudflare's distributed network while enjoying the advantages of high performance, security and reliability. Welcome to CF-Workers-TEXT2KV!
